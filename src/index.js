@@ -1,7 +1,7 @@
 import './index.css';
 import {initialCards} from './components/cards';
 import {addCard, removeCard, cardLike} from './components/card';
-import {openModal, closeModal, handleExitClickModal} from './components/modal';
+import {openModal, closeModal, addExitClickModalHandler} from './components/modal';
 
 //Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content;
@@ -35,7 +35,7 @@ newCardButton.addEventListener('click', evt => {
 });
 
 
-modals.forEach(handleExitClickModal);
+modals.forEach(addExitClickModalHandler);
 
 export function clickImage(evt) {
   const popImg = popupImage.querySelector('.popup__image');

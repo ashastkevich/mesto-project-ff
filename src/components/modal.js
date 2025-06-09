@@ -14,7 +14,7 @@ function exitModal(evt) {
     }
 }
 
-export function handleExitClickModal (modal) {
+export function addExitClickModalHandler (modal) {
   modal.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('popup__close') || evt.target.classList.contains('popup')) {
       closeModal(modal);
