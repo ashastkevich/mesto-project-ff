@@ -1,5 +1,5 @@
 import { openModal } from "./modal";
-import { popupImage } from "..";
+import { popupImage, clickImage } from "..";
 
 // @todo: Функция создания карточки
 export function addCard(name, link, cardTmp, removeCard, clickImage, cardLike) {
@@ -18,15 +18,6 @@ export function addCard(name, link, cardTmp, removeCard, clickImage, cardLike) {
 // Функция удаления карточки
 export function removeCard(evt) {
   evt.target.closest('.card').remove();
-}
-
-export function clickImage(evt) {
-  const popImg = popupImage.querySelector('.popup__image');
-  const popCaption = popupImage.querySelector('.popup__caption');
-  openModal(popupImage);
-  popImg.setAttribute('src', evt.target.getAttribute('src'));
-  popImg.setAttribute('alt', evt.target.getAttribute('alt'));
-  popCaption.textContent = evt.target.getAttribute('alt');
 }
 
 export function cardLike (evt) {
