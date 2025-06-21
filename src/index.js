@@ -2,6 +2,7 @@ import './index.css';
 import {initialCards} from './components/cards';
 import {addCard, removeCard, cardLike} from './components/card';
 import {openModal, closeModal, addExitClickModalHandler} from './components/modal';
+import { enableValidation, clearValidation } from './components/validation';
 
 //Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content;
@@ -20,6 +21,15 @@ const jobInput = formEdit.elements.description;
 const formAddCard = document.forms['new-place'];
 const placeNameInput = formAddCard.elements['place-name'];
 const linkInput = formAddCard.elements.link;
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input-error',
+  inputTypeErrorClass: 'popup__input-type-error',
+  errorClass: 'popup__error-visible'
+}
 
 // Вывести карточки на страницу
 initialCards.forEach(item => placesElement.append(addCard(item.name, item.link, cardTemplate, removeCard, clickImage, cardLike)));
@@ -63,3 +73,5 @@ function handleFormAddCardSubmit(evt) {
 }
 
 formAddCard.addEventListener('submit', handleFormAddCardSubmit);
+
+enableValidation(validationConfig);
