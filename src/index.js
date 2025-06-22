@@ -38,10 +38,14 @@ editButton.addEventListener('click', evt => {
   openModal(editPopup);
   formEdit.elements.name.value = document.querySelector('.profile__title').textContent;
   formEdit.elements.description.value = document.querySelector('.profile__description').textContent;
+  clearValidation(editPopup, validationConfig);
 });
 
 newCardButton.addEventListener('click', evt => {
   openModal(newCardPopup);
+  formAddCard.elements['place-name'].value = '';
+  formAddCard.elements.link.value = '';
+  clearValidation(newCardPopup, validationConfig);
 });
 
 
