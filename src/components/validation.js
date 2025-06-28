@@ -19,6 +19,7 @@ export function clearValidation(formElement, validationConfig) {
     inputElement.classList.remove(validationConfig.inputTypeErrorClass);
   });
   toggleButtonState(inputList, buttonElement, validationConfig);
+  
 }
 
 function showInputError(formElement, inputElement, errorMessage, validationConfig) {
