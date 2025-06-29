@@ -43,7 +43,6 @@ export let myID;
 
 Promise.all([getUserInfo(), getInitialCards()])
   .then(([userData, cardData]) => {
-    console.log('yea');
     profileImage.style.backgroundImage = `url("${userData.avatar}")`;
     profileTitle.textContent = userData.name;
     profileDescription.textContent = userData.about;
@@ -99,6 +98,7 @@ function handleFormAvatarSubmit(evt) {
     .finally(res => {
       evt.target.elements.avatarBtn.textContent = 'Сохранить';
       closeModal(avatarPopup);
+      formAvatar.reset();
     });
 }
 
@@ -114,6 +114,7 @@ function handleFormEditSubmit(evt) {
     .finally(res => {
       evt.target.elements.editBtn.textContent = 'Сохранить';
       closeModal(editPopup);
+      formEdit.reset();
     })
 }
 

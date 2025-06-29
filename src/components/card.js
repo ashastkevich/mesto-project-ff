@@ -1,5 +1,4 @@
-import { openModal } from "./modal";
-import { popupImage, clickImage, myID } from "..";
+import { myID } from "..";
 import { removeCardAPI, addLike, removeLike } from "./api";
 
 // @todo: Функция создания карточки
@@ -30,8 +29,13 @@ export function addCard(name, link, likes, cardID, cardTmp, removeCard, clickIma
 
 // Функция удаления карточки
 export function removeCard(evt) {
-  removeCardAPI(evt.target.closest('.card').id);
-  evt.target.closest('.card').remove(); 
+  removeCardAPI(evt.target.closest('.card').id)
+    .then(res => {
+        evt.target.closest('.card').remove(); 
+    })
+    .catch(err => {
+        console.log(err);
+    }); 
 }
 
 export function cardLike (evt) {
@@ -40,6 +44,7 @@ export function cardLike (evt) {
     removeLike(card.id)
       .then(result => {
         card.querySelector('.card__like-amount').textContent = result.likes.length;
+        evt.target.classList.toggle('card__like-button_is-active');
       })
       .catch(err => {
         console.log(err);
@@ -48,10 +53,10 @@ export function cardLike (evt) {
     addLike(card.id)
       .then(result => {
         card.querySelector('.card__like-amount').textContent = result.likes.length;
+        evt.target.classList.toggle('card__like-button_is-active');
       })
       .catch(err => {
         console.log(err);
       }); 
   };
-  evt.target.classList.toggle('card__like-button_is-active');
 }

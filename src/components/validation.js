@@ -12,7 +12,6 @@ export function clearValidation(formElement, validationConfig) {
   const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
   const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
   inputList.forEach((inputElement) => {
-    inputElement.textContent = '';
     inputElement.setCustomValidity('');
     formElement.querySelector(`.${inputElement.id}-error`).textContent = '';
     formElement.querySelector(`.${inputElement.id}-error`).classList.remove(validationConfig.errorClass);
