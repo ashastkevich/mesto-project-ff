@@ -26,6 +26,9 @@ const placeNameInput = formAddCard.elements['place-name'];
 const linkInput = formAddCard.elements.link;
 const formAvatar = document.forms['edit-avatar'];
 const avatarLinkInput = formAvatar.elements['avatar-link'];
+const profileImage = document.querySelector('.profile__image');
+const profileTitle = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -37,27 +40,22 @@ const validationConfig = {
 }
 
 export let myID;
-getUserInfo()
-  .then(result => {
-    document.querySelector('.profile__image').style.backgroundImage = `url("${result.avatar}")`;
-    document.querySelector('.profile__title').textContent = result.name;
-    document.querySelector('.profile__description').textContent = result.about;
-    myID = result._id;
-  })
-  .catch(err => {
-    console.log(err);
-  });
 
-getInitialCards()
-  .then(result => {
-    result.forEach(item => {
+Promise.all([getUserInfo(), getInitialCards()])
+  .then(([userData, cardData]) => {
+    console.log('yea');
+    profileImage.style.backgroundImage = `url("${userData.avatar}")`;
+    profileTitle.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    myID = userData._id;
+    cardData.forEach(item => {
       let myCard = true;
       if (item.owner._id != myID) myCard = false;
       placesElement.append(addCard(item.name, item.link, item.likes, item._id, cardTemplate, removeCard, clickImage, cardLike, myCard));
     });
   })
   .catch(err => {
-  console.log(err);
+    console.log(err);
   });
 
 avatarButton.addEventListener('click', evt => {
@@ -96,7 +94,7 @@ export function clickImage(evt) {
 function handleFormAvatarSubmit(evt) {
   evt.preventDefault();
   evt.target.elements.avatarBtn.textContent = 'Сохранение...';
-  document.querySelector('.profile__image').style.backgroundImage = `url("${avatarLinkInput.value}")`;
+  profileImage.style.backgroundImage = `url("${avatarLinkInput.value}")`;
   changeAvatar(avatarLinkInput.value)
     .finally(res => {
       evt.target.elements.avatarBtn.textContent = 'Сохранить';
@@ -110,8 +108,8 @@ formAvatar.addEventListener('submit', handleFormAvatarSubmit);
 function handleFormEditSubmit(evt) {
   evt.preventDefault();
   evt.target.elements.editBtn.textContent = 'Сохранение...'
-  document.querySelector('.profile__title').textContent = nameInput.value;
-  document.querySelector('.profile__description').textContent = jobInput.value;
+  profileTitle.textContent = nameInput.value;
+  profileDescription.textContent = jobInput.value;
   updateUserInfo(nameInput.value, jobInput.value)
     .finally(res => {
       evt.target.elements.editBtn.textContent = 'Сохранить';
