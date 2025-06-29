@@ -1,5 +1,4 @@
 import './index.css';
-import {initialCards} from './components/cards';
 import {addCard, removeCard, cardLike} from './components/card';
 import {openModal, closeModal, addExitClickModalHandler} from './components/modal';
 import { enableValidation, clearValidation } from './components/validation';
@@ -29,6 +28,8 @@ const avatarLinkInput = formAvatar.elements['avatar-link'];
 const profileImage = document.querySelector('.profile__image');
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
+const popImg = popupImage.querySelector('.popup__image');
+const popCaption = popupImage.querySelector('.popup__caption');
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -59,46 +60,52 @@ Promise.all([getUserInfo(), getInitialCards()])
 
 avatarButton.addEventListener('click', evt => {
   openModal(avatarPopup);
-  formAvatar.elements['avatar-link'].value = '';
+  avatarLinkInput.value = '';
   clearValidation(avatarPopup, validationConfig);
 });
 
 
 editButton.addEventListener('click', evt => {
   openModal(editPopup);
-  formEdit.elements.name.value = document.querySelector('.profile__title').textContent;
-  formEdit.elements.description.value = document.querySelector('.profile__description').textContent;
+  formEdit.elements.name.value = profileTitle.textContent;
+  formEdit.elements.description.value = profileDescription.textContent;
   clearValidation(editPopup, validationConfig);
 });
 
 newCardButton.addEventListener('click', evt => {
   openModal(newCardPopup);
-  formAddCard.elements['place-name'].value = '';
-  formAddCard.elements.link.value = '';
+  formAddCard.reset();
   clearValidation(newCardPopup, validationConfig);
 });
 
 
 modals.forEach(addExitClickModalHandler);
 
-export function clickImage(evt) {
-  const popImg = popupImage.querySelector('.popup__image');
-  const popCaption = popupImage.querySelector('.popup__caption');
+function showImage(link, title) {
   openModal(popupImage);
-  popImg.setAttribute('src', evt.target.getAttribute('src'));
-  popImg.setAttribute('alt', evt.target.getAttribute('alt'));
-  popCaption.textContent = evt.target.getAttribute('alt');
+  popImg.setAttribute('src', link);
+  popImg.setAttribute('alt', title);
+  popCaption.textContent = title;
+}
+
+function clickImage(evt) {
+  showImage(evt.target.getAttribute('src'), evt.target.getAttribute('alt'));
 }
 
 function handleFormAvatarSubmit(evt) {
   evt.preventDefault();
   evt.target.elements.avatarBtn.textContent = 'Сохранение...';
-  profileImage.style.backgroundImage = `url("${avatarLinkInput.value}")`;
   changeAvatar(avatarLinkInput.value)
-    .finally(res => {
-      evt.target.elements.avatarBtn.textContent = 'Сохранить';
+    .then(res => {
+      profileImage.style.backgroundImage = `url("${avatarLinkInput.value}")`;
       closeModal(avatarPopup);
       formAvatar.reset();
+    })
+    .finally(() => {
+      evt.target.elements.avatarBtn.textContent = 'Сохранить';
+    })
+    .catch(err => {
+      console.log(err);
     });
 }
 
@@ -108,14 +115,19 @@ formAvatar.addEventListener('submit', handleFormAvatarSubmit);
 function handleFormEditSubmit(evt) {
   evt.preventDefault();
   evt.target.elements.editBtn.textContent = 'Сохранение...'
-  profileTitle.textContent = nameInput.value;
-  profileDescription.textContent = jobInput.value;
   updateUserInfo(nameInput.value, jobInput.value)
-    .finally(res => {
-      evt.target.elements.editBtn.textContent = 'Сохранить';
+    .then(res => {
+      profileTitle.textContent = nameInput.value;
+      profileDescription.textContent = jobInput.value;
       closeModal(editPopup);
       formEdit.reset();
     })
+    .finally(() => {
+      evt.target.elements.editBtn.textContent = 'Сохранить';
+    })
+    .catch(err => {
+      console.log(err);
+    });
 }
 
 formEdit.addEventListener('submit', handleFormEditSubmit);
@@ -126,14 +138,14 @@ function handleFormAddCardSubmit(evt) {
   addNewCard(placeNameInput.value, linkInput.value)
     .then(result => {
       placesElement.prepend(addCard(placeNameInput.value, linkInput.value, [], result._id, cardTemplate, removeCard, clickImage, cardLike, true));
+      closeModal(newCardPopup);
+      formAddCard.reset();
     })
     .catch(err => {
       console.log(err);
     })
     .finally(res => {
       evt.target.elements.addCardBtn.textContent = 'Сохранить';
-      closeModal(newCardPopup);
-      formAddCard.reset();
     });
 }
 

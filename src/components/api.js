@@ -104,7 +104,6 @@ export const removeLike = (cardID) => {
 }
 
 export const changeAvatar = (link) => {
-    console.log(link);
     return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
     headers: config.headers,
