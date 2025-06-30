@@ -40,7 +40,7 @@ const validationConfig = {
   errorClass: 'popup__error-visible'
 }
 
-export let myID;
+let myID;
 
 Promise.all([getUserInfo(), getInitialCards()])
   .then(([userData, cardData]) => {
@@ -51,7 +51,7 @@ Promise.all([getUserInfo(), getInitialCards()])
     cardData.forEach(item => {
       let myCard = true;
       if (item.owner._id != myID) myCard = false;
-      placesElement.append(addCard(item.name, item.link, item.likes, item._id, cardTemplate, removeCard, clickImage, cardLike, myCard));
+      placesElement.append(addCard(item.name, item.link, item.likes, item._id, cardTemplate, removeCard, clickImage, cardLike, myCard, myID));
     });
   })
   .catch(err => {
@@ -101,11 +101,11 @@ function handleFormAvatarSubmit(evt) {
       closeModal(avatarPopup);
       formAvatar.reset();
     })
-    .finally(() => {
-      evt.target.elements.avatarBtn.textContent = 'Сохранить';
-    })
     .catch(err => {
       console.log(err);
+    })
+    .finally(() => {
+      evt.target.elements.avatarBtn.textContent = 'Сохранить';
     });
 }
 
@@ -122,11 +122,11 @@ function handleFormEditSubmit(evt) {
       closeModal(editPopup);
       formEdit.reset();
     })
-    .finally(() => {
-      evt.target.elements.editBtn.textContent = 'Сохранить';
-    })
     .catch(err => {
       console.log(err);
+    })
+    .finally(() => {
+      evt.target.elements.editBtn.textContent = 'Сохранить';
     });
 }
 
@@ -137,7 +137,7 @@ function handleFormAddCardSubmit(evt) {
   evt.target.elements.addCardBtn.textContent = 'Сохранение...'
   addNewCard(placeNameInput.value, linkInput.value)
     .then(result => {
-      placesElement.prepend(addCard(placeNameInput.value, linkInput.value, [], result._id, cardTemplate, removeCard, clickImage, cardLike, true));
+      placesElement.prepend(addCard(placeNameInput.value, linkInput.value, [], result._id, cardTemplate, removeCard, clickImage, cardLike, true, myID));
       closeModal(newCardPopup);
       formAddCard.reset();
     })

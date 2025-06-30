@@ -12,10 +12,7 @@ export function clearValidation(formElement, validationConfig) {
   const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
   const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
   inputList.forEach((inputElement) => {
-    inputElement.setCustomValidity('');
-    formElement.querySelector(`.${inputElement.id}-error`).textContent = '';
-    formElement.querySelector(`.${inputElement.id}-error`).classList.remove(validationConfig.errorClass);
-    inputElement.classList.remove(validationConfig.inputTypeErrorClass);
+    hideInputError(formElement, inputElement, validationConfig);
   });
   toggleButtonState(inputList, buttonElement, validationConfig);
   
@@ -33,6 +30,7 @@ function hideInputError(formElement, inputElement, validationConfig) {
   inputElement.classList.remove(validationConfig.inputTypeErrorClass);
   errorElement.classList.remove(validationConfig.errorClass);
   errorElement.textContent = '';
+  inputElement.setCustomValidity('');
 }
 
 function checkInputValidity(formElement, inputElement, validationConfig) {

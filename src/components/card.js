@@ -1,8 +1,7 @@
-import { myID } from "..";
 import { removeCardAPI, addLike, removeLike } from "./api";
 
 // @todo: Функция создания карточки
-export function addCard(name, link, likes, cardID, cardTmp, removeCard, clickImage, cardLike, myCard) {
+export function addCard(name, link, likes, cardID, cardTmp, removeCard, clickImage, cardLike, myCard, myID) {
   const cardElement = cardTmp.querySelector('.card').cloneNode(true);
   const cardImageElement = cardElement.querySelector('.card__image');
   const cardLikeButton = cardElement.querySelector('.card__like-button');
