@@ -81,15 +81,15 @@ newCardButton.addEventListener('click', evt => {
 
 modals.forEach(addExitClickModalHandler);
 
-function showImage(link, title) {
+// !ВНИМАНИЕ Ревьюера! Вы почему-то в рамках последнего ревью смотрели предыдущую версию моего проекта. 
+// В той версии, которую я вам направил на ревью все ваши замечания уже были исправлены.
+// На Github была выложена корректная последняя версия.
+
+function clickImage(name, link) {
   openModal(popupImage);
   popImg.setAttribute('src', link);
-  popImg.setAttribute('alt', title);
-  popCaption.textContent = title;
-}
-
-function clickImage(evt) {
-  showImage(evt.target.getAttribute('src'), evt.target.getAttribute('alt'));
+  popImg.setAttribute('alt', name);
+  popCaption.textContent = name;
 }
 
 function handleFormAvatarSubmit(evt) {

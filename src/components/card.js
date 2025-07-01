@@ -21,7 +21,7 @@ export function addCard(name, link, likes, cardID, cardTmp, removeCard, clickIma
   } else {
     cardElement.querySelector('.card__delete-button').remove();
   }
-  cardImageElement.addEventListener('click', clickImage);
+  cardImageElement.addEventListener('click', () => clickImage(name, link));
   cardLikeButton.addEventListener('click', cardLike);
   return cardElement;
 }
